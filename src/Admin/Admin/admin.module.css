@@ -1,0 +1,94 @@
+.maincontainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    
+}
+.container{
+    display: flex;
+    flex-direction: row;
+}
+
+.horizontal{
+    height: 6rem;
+    width: 15rem;
+    margin: 2rem 0.5rem;
+    padding: 1rem 1rem;
+    background: rgb(242, 243, 247);
+    border: 2px solid rgb(235, 235, 248);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.icontext{
+    display: flex; 
+    flex-direction: row;
+    justify-content: space-around;
+}
+.icontext h3{
+    margin-bottom: 0;
+}
+.chartscontainer{
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    
+}
+.barcontainer{
+    margin: 0 1rem;
+    padding: 1rem 1.5rem;
+    width: 62rem;
+    height: 450px;
+    border: 1px solid rgb(224, 224, 247);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.pie {
+    margin: 1rem 1rem;
+    width: 20rem;
+    padding: 1rem; /* Adjust padding to add space */
+    border: 1px solid rgb(224, 224, 247);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .pie h3 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0;
+  }
+.income{
+    margin: 1rem 1rem;
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    
+}
+.incomeM , .incomeW{
+    padding: 1rem 1rem;
+    width: 500px;
+    height: 270px;
+    border: 1px solid rgb(224, 224, 247);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+}
+.doctorstab{
+    margin: 1rem 0;
+    height: 440px;
+    padding: 1rem 1rem;
+    width: 100%;
+    border: 1px solid rgb(224, 224, 247);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.appointmentstab{
+    margin: 0 1rem;
+    padding: 1rem 1rem;
+    width: 600px;
+    border: 1px solid rgb(224, 224, 247);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+

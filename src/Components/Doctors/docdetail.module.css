@@ -1,0 +1,6 @@
+.detailcontainer{
+    display: grid;
+    grid-template-columns: 40% auto;
+    margin: 4rem 5rem;
+}
+

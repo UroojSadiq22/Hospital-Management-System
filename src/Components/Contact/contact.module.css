@@ -1,0 +1,49 @@
+.contactcontainer {
+    max-width: 70%;
+    height: 950px;
+    margin: 2rem auto;
+    padding: 20px;
+    background: #f4f4f4;
+    border: 2px solid rgb(200, 200, 245);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    
+}
+.formimg{
+  display: flex;
+  justify-content: space-around;
+}
+.contactcontainer h2 {
+  text-align: center;
+  margin: 2rem;
+  color: rgb(72, 72, 235);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.formgroup {
+  margin: 1rem;
+}
+
+.formgroup label {
+  font-weight: bold;
+  margin: 1rem 3rem;
+}
+
+.formgroup input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+}
+
