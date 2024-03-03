@@ -8,22 +8,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Styleappointment from './appointment.module.css'
-import { Button } from '@mui/material';
-import Fab from '@mui/material/Fab';
-import AddIcon from '@mui/icons-material/Add';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import doctorsData from '../doctors';
-import { Link } from 'react-router-dom';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import FormControl from '@mui/material/FormControl';
-import { db } from '../../../firebase';
+import { db } from "../../../firebase";
+import { collection, getDocs, deleteDoc, doc, updateDoc } from "firebase/firestore"
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -46,191 +33,30 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 export default function CustomizedTables() {
-  const [data , setData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    specialization: '',
-    date: '',
-    time: ''
-  });
-
-  const InputHandler = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
-  };
-  // const handleSubmit = (e) =>{
-  //   e.preventDefault();
-  //   // const newDoctor = { ...docData };
-  //   // setDoctors([...doctors, newDoctor]); // Adding new doctor to the doctors array
-  //   // handleClose();
-  // }
-  const [rows, setRows] = useState([]);
-  
+  const [patientData , setPatientData] = useState([]);
 
 
   useEffect(() => {
-    const fetchAppointments = async () => {
+    const fetchappointmentData = async () => {
       try {
-        const snapshot = await db.collection('appointments').get();
-        const appointments = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setRows(appointments);
-        
+        const querySnapshot = await getDocs(collection(db, "Appointments"));
+        const data = [];
+        querySnapshot.forEach((doc) => {
+          data.push({ id: doc.id, ...doc.data() });
+        });
+        setPatientData(data);
       } catch (error) {
-        console.error('Error fetching appointments:', error);
-        // Handle error
+        console.error("Error fetching Appointment data: ", error);
       }
     };
 
-    fetchAppointments();
+    fetchappointmentData();
   }, []);
-  const handleSubmit = (e) =>{
-    e.preventDefault();
-    // const newDoctor = { ...docData };
-    // setDoctors([...doctors, newDoctor]); // Adding new doctor to the doctors array
-    // handleClose();
-  }
 
-  const [open, setOpen] = useState(false);
-  const [doctors, setDoctors] = useState(doctorsData);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const [selectDoctor, setSelectDoctor] = React.useState('');
-
-  const handleChange = (event) => {
-    setSelectDoctor(event.target.value);
-  };
+  
   return (
     <div className={Styleappointment.patientstab}>
         
-        <div style={{display: 'flex' , justifyContent: 'space-between'}}>
-      <h2 style={{ margin: '1rem'}}>Appointments</h2>
-        <Fab color="primary" aria-label="add" size='small' onClick={handleClickOpen}>
-        <AddIcon />
-        </Fab>
-        <Dialog
-        open={open}
-        onClose={handleClose}
-        onSubmit={handleSubmit}
-        PaperProps={{
-          component: 'form',
-          onSubmit: (event) => {
-            event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const formJson = Object.fromEntries(formData.entries());
-            const email = formJson.email;
-            console.log(email);
-            handleClose();
-          },
-        }}
-      >
-        <DialogTitle>New Appointment Registration</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            name="name"
-            label="Patient Name"
-            type="text"
-            variant="standard"
-            value={data.name}
-            onChange={InputHandler}
-          />
-
-<TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            name="email"
-            label="Email Address"
-            type="email"
-            fullWidth
-            variant="standard"
-            value={data.email}
-            onChange={InputHandler}
-          />
-
-<TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            name="phone"
-            label="Phone number"
-            type="text"
-            variant="standard"
-            value={data.phone}
-            onChange={InputHandler}
-          />
-<FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-<InputLabel id="demo-simple-select-standard-label">Select Doctor</InputLabel>
-        <Select
-          labelId="demo-simple-select-standard-label"
-          id="demo-simple-select-standard"
-          value={selectDoctor}
-          onChange={handleChange}
-          label="Select Your Doctor"
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          {doctorsData.map((i)=> (
-            <MenuItem value={10}>{i.name}</MenuItem>
-          ))}
-          
-          {/* <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem> */}
-        </Select>
-
-</FormControl>
-
-
-<TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            name="date"
-            label="Date"
-            type="date"
-            fullWidth
-            variant="standard"
-            value={data.date}
-            onChange={InputHandler}
-          />
-
-<TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            name="time"
-            label="Time"
-            type="time"
-            fullWidth
-            variant="standard"
-            value={data.time}
-            onChange={InputHandler}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">Register</Button>
-        </DialogActions>
-      </Dialog>
-      </div>
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 430 }} aria-label="customized table">
         <TableHead>
@@ -245,7 +71,7 @@ export default function CustomizedTables() {
           </TableRow>
         </TableHead>
         <TableBody>
-        {rows.map((appointment) => (
+        {patientData.map((appointment) => (
             <StyledTableRow
               key={appointment.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

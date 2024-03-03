@@ -8,7 +8,7 @@ import  db  from '../../firebase';
 import { collection, addDoc } from "firebase/firestore"; 
 import { Button } from '@mui/material';
 import { auth } from '../../firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import submitDataToFirestore from "../../Config/submitData";
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -37,52 +37,17 @@ const Top_div1 = () => {
   
 const handleSubmit = async (e) => {
   e.preventDefault();
-  // try {
-  //   // Save appointment data to Firebase Realtime Database
-  //   // await db.ref('appointments').push(patientData);
-    
-  //   await db.collection('appointments').add(patientData);
-  //   // const docRef = await addDoc(collection(db, 'appointments').add(patientData));
-  //   handleClose();
-  //   // Optionally, you can display a success message or redirect the user to another page
-  // } 
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, patientData.email, 'defaultPassword');
-    const user = userCredential.user;
-
-    // Save patient data to Firestore
-    await savePatientDataToFirestore(patientData);
-
-    // Clear the form fields
-    setPatientData({
-      name: '',
-      email: '',
-      phone: '',
-      doctor: '',
-      date: '',
-      time: ''
-    });
-
-    setOpen(false); // Close the dialog
-
-    console.log('Patient data saved successfully');
-  } catch (error) {
-    console.error('Error saving data:', error);
-  }
-};
-const savePatientDataToFirestore = async (data) => {
-  try {
-    // Add patient data to Firestore collection
-    // await addDoc(collection(db, 'appointments'), data);
-
-    // Get a reference to the "appointments" collection
-    const appointmentsCollectionRef = collection(db, 'appointments');
-
-    // Add patient data to the "appointments" collection
-    await addDoc(appointmentsCollectionRef, data)
-  } catch (error) {
-    console.error('Error saving data to Firestore:', error);
-  }
+  const appointmentData= {
+      
+    name: patientData.name,
+  email: patientData.email,
+  phone: patientData.phone,
+  doctor: patientData.doctor,
+  date: patientData.date,
+  time: patientData.time
+  };
+  handleClose();
+  submitDataToFirestore( appointmentData, "Appointments");
 };
   const [open, setOpen] = useState(false);
   const [doctors, setDoctors] = useState(doctorsData);
