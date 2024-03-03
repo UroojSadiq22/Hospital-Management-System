@@ -63,7 +63,7 @@ const Signin = () => {
       //setSignedIn(true);
 
       // Navigate to the desired page after successful sign-in
-       navigate("/patientdash");
+       navigate("/patientdash" , { state: { name: patientData.name } });
     } catch (error) {
       console.error('Error signing in:', error);
       // Handle sign-in errors here

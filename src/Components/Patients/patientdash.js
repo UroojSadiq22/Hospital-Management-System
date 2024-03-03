@@ -18,6 +18,7 @@ import { SparkLineChart } from '@mui/x-charts/SparkLineChart';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { axisClasses } from '@mui/x-charts';
 import Patients from './patientsNav'
+import { useLocation } from 'react-router-dom';
 
 function createData(name, value) {
   return { name, value};
@@ -48,16 +49,18 @@ const chartSetting = {
 };
 const valueFormatter = (value) => `${value}`;
 const Patientdash = () => {
+  const { state } = useLocation();
+  const patientName = state && state.name ? state.name : '';
   return (<>
   <Patients/>
-  <h1 style={{color: 'blue', margin: '1rem 1.7rem'}}>Welcome Christopher Burrell!</h1>
+  <h1 style={{color: 'blue', margin: '1rem 1.7rem'}}>Welcome {patientName}!</h1>
     <div className={StyleDash.dashboardcontainer}>
       <div style={{display: 'flex' , flexDirection: 'column'}}>
       <div className={StyleDash.intro}>
           <div className={StyleDash.imgtitle}>
             <img src={PatientImg} alt='patient'></img>
-            <div style={{margin: '2rem 1rem'}}>
-            <h2>Christopher Burrell</h2>
+            <div style={{margin: '1rem 1rem'}}>
+            <h2>{patientName}</h2>
             <label>Age: 25</label>
             </div>
             
