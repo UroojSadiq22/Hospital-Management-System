@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -23,6 +23,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
+import { db } from '../../../firebase';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -45,7 +46,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 export default function CustomizedTables() {
-  const [patientData , setPatientData] = useState({
+  const [data , setData] = useState({
     name: '',
     email: '',
     phone: '',
@@ -55,14 +56,43 @@ export default function CustomizedTables() {
   });
 
   const InputHandler = (e) => {
-    setPatientData({ ...patientData, [e.target.name]: e.target.value });
+    setData({ ...data, [e.target.name]: e.target.value });
   };
+  // const handleSubmit = (e) =>{
+  //   e.preventDefault();
+  //   // const newDoctor = { ...docData };
+  //   // setDoctors([...doctors, newDoctor]); // Adding new doctor to the doctors array
+  //   // handleClose();
+  // }
+  const [rows, setRows] = useState([]);
+  
+
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const snapshot = await db.collection('appointments').get();
+        const appointments = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setRows(appointments);
+        
+      } catch (error) {
+        console.error('Error fetching appointments:', error);
+        // Handle error
+      }
+    };
+
+    fetchAppointments();
+  }, []);
   const handleSubmit = (e) =>{
     e.preventDefault();
     // const newDoctor = { ...docData };
     // setDoctors([...doctors, newDoctor]); // Adding new doctor to the doctors array
     // handleClose();
   }
+
   const [open, setOpen] = useState(false);
   const [doctors, setDoctors] = useState(doctorsData);
 
@@ -103,7 +133,7 @@ export default function CustomizedTables() {
           },
         }}
       >
-        <DialogTitle>New Patient Registration</DialogTitle>
+        <DialogTitle>New Appointment Registration</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -114,7 +144,7 @@ export default function CustomizedTables() {
             label="Patient Name"
             type="text"
             variant="standard"
-            value={patientData.name}
+            value={data.name}
             onChange={InputHandler}
           />
 
@@ -128,7 +158,7 @@ export default function CustomizedTables() {
             type="email"
             fullWidth
             variant="standard"
-            value={patientData.email}
+            value={data.email}
             onChange={InputHandler}
           />
 
@@ -141,7 +171,7 @@ export default function CustomizedTables() {
             label="Phone number"
             type="text"
             variant="standard"
-            value={patientData.phone}
+            value={data.phone}
             onChange={InputHandler}
           />
 <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
@@ -177,7 +207,7 @@ export default function CustomizedTables() {
             type="date"
             fullWidth
             variant="standard"
-            value={patientData.date}
+            value={data.date}
             onChange={InputHandler}
           />
 
@@ -191,7 +221,7 @@ export default function CustomizedTables() {
             type="time"
             fullWidth
             variant="standard"
-            value={patientData.time}
+            value={data.time}
             onChange={InputHandler}
           />
         </DialogContent>
@@ -215,23 +245,23 @@ export default function CustomizedTables() {
           </TableRow>
         </TableHead>
         <TableBody>
-        {/* {patients.map((row , i) => (
+        {rows.map((appointment) => (
             <StyledTableRow
-              key={i}
+              key={appointment.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <StyledTableCell component="th" scope="row" >
-                {row.name}
+                {appointment.name}
               </StyledTableCell>
               
-              <StyledTableCell align="right">{row.ID}</StyledTableCell>
-              <StyledTableCell align="right">{row.date}</StyledTableCell>
-              <StyledTableCell align="right">{row.phone}</StyledTableCell>
-              <StyledTableCell align="right">{row.email}</StyledTableCell>
-              <StyledTableCell align="right">{row.doctor}</StyledTableCell>
-              <StyledTableCell align="right">{row.time}</StyledTableCell>
+              <StyledTableCell align="right">{appointment.ID}</StyledTableCell>
+              <StyledTableCell align="right">{appointment.date}</StyledTableCell>
+              <StyledTableCell align="right">{appointment.phone}</StyledTableCell>
+              <StyledTableCell align="right">{appointment.email}</StyledTableCell>
+              <StyledTableCell align="right">{appointment.doctor}</StyledTableCell>
+              <StyledTableCell align="right">{appointment.time}</StyledTableCell>
             </StyledTableRow>
-          ))} */}
+          ))}
         </TableBody>
       </Table>
     </TableContainer>

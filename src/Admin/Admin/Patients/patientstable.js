@@ -83,9 +83,26 @@ export default function CustomizedTables() {
       });
   
       setOpen(false);
-    } catch (error) {
-      console.error('Error registering user:', error);
+    } 
+    // catch (error) {
+    //   console.error('Error registering user:', error);
+    // }
+    catch (error) {
+      if (error.code === 'auth/email-already-in-use') {
+        // Handle case where email is already in use
+        console.error('Email is already in use');
+        // Display a user-friendly message informing the patient
+        // You can update your UI to show this message to the patient
+        alert('This email address is already in use. Please use a different email address or sign in.');
+      } else {
+        // Handle other errors
+        console.error('Error registering user:', error);
+        // Display a generic error message to the patient
+        // You can update your UI to show this message to the patient
+        alert('An error occurred while registering. Please try again later.');
+      }
     }
+
   };
   
   
