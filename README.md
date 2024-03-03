@@ -14,6 +14,7 @@ To explore the JourneyJoy website locally, follow these simple steps:
 
 ##Visit Our Website
 You can visit our live website here.
+https://hospital-management-lemon.vercel.app/
 
 
 ##Clone the Repository:
