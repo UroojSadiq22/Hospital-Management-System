@@ -1,4 +1,4 @@
-import React from 'react'
+import React , {useState, useEffect} from 'react'
 import Cover from './cover'
 import Stylecontent from './content.module.css'
 
@@ -10,23 +10,33 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Link, Routes } from 'react-router-dom'
 import doctors from './doctors'
-
+import { db } from "../../firebase";
+import { collection, getDocs, deleteDoc, doc, updateDoc } from "firebase/firestore"
 
 import {delay, motion} from 'framer-motion'
 
 
 
 const Content = () => {
+  const [doctorData , setdoctorData] = useState([]);
+  
 
-    // const doc = [
-    //     { id:1 , name: 'Dr. Stephen Jord' , degree: 'Eye Specilist', imageUrl: `${doctor1}`},
-    //     { id:2 , name: 'Dr. Flix Tom' , degree: 'Dental Surgoen', imageUrl: `${doctor2}`},
-    //     { id:3 , name: 'Dr. Micheal Jan' , degree: 'Orthopadiac', imageUrl: `${doctor3}`},
-    //     { id:4 , name: 'Dr. Herry Kane' , degree: 'ENT Specialist', imageUrl: `${doctor4}`},
-    //     { id:5 , name: 'Dr. Flavia Mark' , degree: 'General Surgoen', imageUrl: `${doctor5}`},
-    //     { id:6 , name: 'Dr. Tresa Shane' , degree: 'Child Specialist', imageUrl: `${doctor6}`}
+  useEffect(() => {
+    const fetchdoctorData = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "Appointments"));
+        const data = [];
+        querySnapshot.forEach((doc) => {
+          data.push({ id: doc.id, ...doc.data() });
+        });
+        setdoctorData(data);
+      } catch (error) {
+        console.error("Error fetching Appointment data: ", error);
+      }
+    };
 
-    // ]
+    fetchdoctorData();
+  }, []);
 
     const variant = {
       visible: { scale: 1 },
@@ -82,18 +92,9 @@ const Content = () => {
     title="Doctors"
     style={{objectFit: 'cover' , marginBottom: '0'}}/>
 
-{/* <img src={Drimg} alt='drimg'></img> */}
-{/* <ul>
-  <li> <i class="fa fa-facebook" aria-hidden="true"></i> </li>
-  <li> <i class="fa-brands fa-linkedin"></i> </li>
-  <li> <i class="fa-brands fa-instagram"></i> </li> 
-</ul> */}
-
 
 </div>
 
-
-  
 
 
 

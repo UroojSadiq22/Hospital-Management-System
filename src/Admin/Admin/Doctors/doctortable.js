@@ -17,7 +17,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import doctorsData from '../doctors';
-
+import submitDataToFirestore from "../../../Config/submitData";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -60,6 +60,19 @@ export default function CustomizedTables() {
     const newDoctor = { ...docData };
     setDoctors([...doctors, newDoctor]); // Adding new doctor to the doctors array
     handleClose();
+
+    const doctorData= {
+
+      name: docData.name,
+      email: docData.email,
+      phone: docData.phone,
+      degree: docData.degree,
+      experience: docData.experience,
+      salary:docData.salary,
+      hireon: docData.hireon
+      };
+      
+      submitDataToFirestore( doctorData, "Doctors");
   }
   const [open, setOpen] = useState(false);
   const [doctors, setDoctors] = useState(doctorsData);
